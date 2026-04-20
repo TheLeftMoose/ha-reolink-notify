@@ -25,6 +25,12 @@ Or import manually via **Settings → Automations → Blueprints → Import Blue
 
 ## Inputs
 
+## Known Limitations
+
+- **iOS tap behavior**: Tapping a notification opens the HA companion app to the default dashboard. iOS does not support opening a specific entity or camera feed directly from a notification tap.
+
+## Inputs
+
 | Input | Description | Default |
 |-------|-------------|---------|
 | iOS Devices to Notify | Apple devices running the HA companion app | — |

@@ -6,13 +6,16 @@ blueprint:
     mobile app. No snapshot files are saved to disk.
 
     iOS: single notification with a live camera entity attachment. Tapping
-    opens the camera feed in the HA app.
+    opens the HA companion app to the default dashboard — iOS does not support
+    opening a specific camera or entity from a notification tap.
 
     Android: single notification with the camera image fetched directly via
-    the authenticated camera proxy.
+    the authenticated camera proxy. Tapping opens the camera feed.
 
-    Based on https://github.com/jterrace/ha-reolink-rich-notifications
+    Version: 1.1.0
+    Documentation: https://github.com/TheLeftMoose/ha-reolink-notify
 
+  source_url: https://github.com/TheLeftMoose/ha-reolink-notify/blob/main/reolink_rich_notifications.yaml
   domain: automation
   input:
     notify_device_ios:
@@ -112,7 +115,6 @@ action:
               tag: "{{ trigger.to_state.context.id }}"
               ttl: 0
               priority: high
-              url: "entityId:{{ camera_to_snapshot }}"
               entity_id: "{{ camera_to_snapshot }}"
 
   # Android: camera image fetched directly via authenticated camera proxy.

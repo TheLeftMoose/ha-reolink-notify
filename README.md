@@ -10,6 +10,7 @@ Based on [ha-reolink-rich-notifications](https://github.com/jterrace/ha-reolink-
 - **iOS**: single notification with a live camera attachment; tap opens the camera feed in the HA app
 - **Android**: single notification with the camera image via the authenticated camera proxy
 - Handles multiple sensor types per camera (motion, person, vehicle, pet) — only one notification fires per camera per retrigger window
+- Optional **Web UI notification** in the HA frontend with a live camera image — each camera overwrites its own notification rather than accumulating
 - Configurable retrigger delay to suppress duplicate alerts (default: 20 seconds)
 
 ## Prerequisites
@@ -37,3 +38,4 @@ Or import manually via **Settings → Automations → Blueprints → Import Blue
 | Android Devices to Notify | Android devices running the HA companion app | — |
 | Trigger Sensors | Reolink binary sensors to monitor | — |
 | Retrigger Delay | Minimum time between notifications for the same camera | 20 seconds |
+| Web UI Notification | Show a persistent notification in the HA frontend | off |

@@ -12,7 +12,10 @@ blueprint:
     Android: single notification with the camera image fetched directly via
     the authenticated camera proxy. Tapping opens the camera feed.
 
-    Version: 1.1.0
+    Web UI: optional persistent notification in the HA frontend with a live
+    camera image. Each camera overwrites its own notification on retrigger.
+
+    Version: 1.2.0
     Documentation: https://github.com/TheLeftMoose/ha-reolink-notify
 
   source_url: https://github.com/TheLeftMoose/ha-reolink-notify/blob/main/reolink_rich_notifications.yaml
@@ -46,6 +49,16 @@ blueprint:
             - integration: reolink
               domain: binary_sensor
 
+    notify_web_ui:
+      name: Web UI Notification
+      description: >
+        Show a persistent notification in the Home Assistant frontend when an
+        alert triggers. Each camera overwrites its own notification rather than
+        creating new ones. Dismissed manually from the HA UI.
+      default: false
+      selector:
+        boolean:
+
     retrigger_delay:
       name: Retrigger Delay
       description: Minimum time between notifications for the same camera.
@@ -62,6 +75,7 @@ max: 100
 variables:
   notify_device_ios: !input notify_device_ios
   notify_device_android: !input notify_device_android
+  notify_web_ui: !input notify_web_ui
   trigger_entities: !input trigger_entities
   retrigger_delay: !input retrigger_delay
 
@@ -101,6 +115,17 @@ action:
       - "{{ should_skip_notification }}"
     then:
       - stop: "Skipping notification — same camera triggered too recently."
+
+  # Web UI: persistent notification in the HA frontend, overwrites previous
+  # notification for the same camera via a stable notification_id.
+  - if:
+      - "{{ notify_web_ui }}"
+    then:
+      - action: persistent_notification.create
+        data:
+          title: "{{ trigger.to_state.attributes.friendly_name }}"
+          message: "![Camera image](/api/camera_proxy/{{ camera_to_snapshot }})"
+          notification_id: "reolink_notify_{{ camera_to_snapshot }}"
 
   # iOS: dynamic camera entity attachment, authenticated via companion app.
   # Tapping the notification opens the live camera feed in the HA app.
